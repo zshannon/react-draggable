@@ -1127,7 +1127,7 @@
 	  if (el.attachEvent) {
 	    el.attachEvent('on' + event, handler);
 	  } else if (el.addEventListener) {
-	    el.addEventListener(event, handler, true);
+	    el.addEventListener(event, handler, { capture: true, passive: false });
 	  } else {
 	    // $FlowIgnore: Doesn't think elements are indexable
 	    el['on' + event] = handler;
@@ -1141,7 +1141,7 @@
 	  if (el.detachEvent) {
 	    el.detachEvent('on' + event, handler);
 	  } else if (el.removeEventListener) {
-	    el.removeEventListener(event, handler, true);
+	    el.removeEventListener(event, handler, { capture: true, passive: false });
 	  } else {
 	    // $FlowIgnore: Doesn't think elements are indexable
 	    el['on' + event] = null;
