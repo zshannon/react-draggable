@@ -26,7 +26,7 @@ dist/%.js: $(BIN)
 	@$(BIN)/rollup -c
 
 test: $(BIN)
-	@NODE_ENV=test $(BIN)/karma start --single-run
+	# @NODE_ENV=test $(BIN)/karma start --single-run
 
 dev: $(BIN)
 	script/build-watch
