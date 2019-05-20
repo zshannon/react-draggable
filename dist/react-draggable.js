@@ -1512,6 +1512,10 @@
 	      // Used while dragging to determine deltas.
 	      lastX: NaN, lastY: NaN,
 	      touchIdentifier: null
+	    }, _this.handleRef = function (elForTouchStart) {
+	      if (_this.elForTouchStart) removeEvent(_this.elForTouchStart, eventsFor.touch.start, _this.onTouchStart);
+	      _this.elForTouchStart = elForTouchStart;
+	      addEvent(_this.elForTouchStart, eventsFor.touch.start, _this.onTouchStart);
 	    }, _this.handleDragStart = function (e) {
 	      // Make it possible to attach event handlers on top of this one.
 	      _this.props.onMouseDown(e);
@@ -1662,6 +1666,9 @@
 
 	      return _this.handleDragStop(e);
 	    }, _this.onTouchStart = function (e) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      console.log('onTouchStart', e);
 	      // We're on a touch device now, so change the event handlers
 	      dragEventFor = eventsFor.touch;
 
@@ -1689,6 +1696,9 @@
 	        removeEvent(ownerDocument, eventsFor.touch.stop, this.handleDragStop);
 	        if (this.props.enableUserSelectHack) removeUserSelectStyles(ownerDocument);
 	      }
+	      if (this.elForTouchStart) {
+	        removeEvent(this.elForTouchStart, eventsFor.touch.start, this.onTouchStart);
+	      }
 	    }
 
 	    // Same as onMouseDown (start drag), but now consider this a touch device.
@@ -1704,9 +1714,9 @@
 	        // Note: mouseMove handler is attached to document so it will still function
 	        // when the user drags quickly and leaves the bounds of the element.
 	        onMouseDown: this.onMouseDown,
-	        onTouchStart: this.onTouchStart,
 	        onMouseUp: this.onMouseUp,
-	        onTouchEnd: this.onTouchEnd
+	        onTouchEnd: this.onTouchEnd,
+	        ref: this.handleRef // onTouchStart will happen here
 	      });
 	    }
 	  }]);
